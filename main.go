@@ -92,7 +92,7 @@ fmt.Println(m.Content)
 		s.ChannelMessageSend(m.ChannelID, "Ping!")
 	}
 
-	match, _ := regexp.MatchString("(!elo )[^ ]*", m.Content)
+	match, _ := regexp.MatchString("(!elo )[^ ]*/?$", m.Content)
 	fmt.Println(match)
 	if match {
 		nickname := m.Content[5:len(m.Content)]
