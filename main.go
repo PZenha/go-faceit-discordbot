@@ -83,7 +83,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate){
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-fmt.Println(m.Content)
+
 	if m.Content == "ping" {
 		s.ChannelMessageSend(m.ChannelID, "Pong!")
 	}
@@ -93,16 +93,25 @@ fmt.Println(m.Content)
 	}
 
 	match, _ := regexp.MatchString("(!elo )[^ ]*/?$", m.Content)
-	fmt.Println(match)
 	if match {
 		nickname := m.Content[5:len(m.Content)]
-		fmt.Println(nickname)
+		if nickname == "cenz"{
+			emojis, _ := s.GuildEmojis(m.GuildID)
+			for _, emoji := range emojis {
+				if emoji.Name == "FCP"{
+					s.MessageReactionAdd(m.ChannelID, m.ID, emoji.APIName())
+					break
+				}
+			}
+		}
 		elo := faceitElo(nickname)
 		s.ChannelMessageSend(m.ChannelID, strconv.Itoa(elo))
 	}
 }
 
 func faceitElo(nickname string) int{
+
+
 	url := "https://open.faceit.com/data/v4/players?nickname="+nickname+"&game=csgo"
 	bearer := "Bearer " + FaceitAPIKey
 
